@@ -131,3 +131,40 @@ section.game-over.show {
 .game-over > a:hover {
   opacity: 1;
 }
+
+.wrong-letters-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.wrong-letters-container p {
+  margin: 0 0 5px;
+}
+
+.wrong-letters-container span {
+  font-size: 24px;
+}
+
+.notification {
+  background-color: #ede04d;
+  color: rgb(16, 16, 16);
+  border-radius: 10px;
+  padding: 15px 20px;
+  z-index: 1;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification.show {
+  visibility: visible;
+  opacity: 1;
+}
