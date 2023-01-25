@@ -14,6 +14,8 @@ let points = 0;
 let randomWord;
 //Array med de olika kroppsdelarna
 let bodyparts = ["scaffold", "head", "body", "arms", "legs"];
+//Variabel för att disabla knappar vid vinst/förlust
+let disableKeys = false;
 
 const noMatchContainer = document.querySelector(".nomatch");
 const wordContainer = document.querySelector(".word");
@@ -27,7 +29,9 @@ playAgainBtn.addEventListener("click", restartGame);
 
 document.addEventListener("keydown", (e) => {
   const keyPressed = e.key.toUpperCase();
-  if (guessesUntilWin > 0) checkKeyPress(keyPressed);
+  if (disableKeys === false) {
+    checkKeyPress(keyPressed);
+  }
 });
 
 /////////////////////////-----FUNCTIONS-----//////////////////////////
@@ -70,6 +74,7 @@ function correctKeypress(keypress) {
       if (guessesUntilWin === 0) {
         points += 100;
         document.querySelector(".you-won").classList.add("show");
+        disableKeys = true;
         updateUI();
       }
     }
@@ -95,6 +100,7 @@ function renderSvg() {
   if (maxWrongGuesses === 0) {
     document.querySelector(".game-over").classList.add("show");
     points = 0;
+    disableKeys = true;
     updateUI();
   }
 }
@@ -130,4 +136,5 @@ function restartGame() {
   bodyparts = ["scaffold", "head", "body", "arms", "legs"];
   updateUI();
   generateRandomWord();
+  disableKeys = false;
 }
