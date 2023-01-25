@@ -1,13 +1,13 @@
 const Scoreboard = document.querySelector("footer").lastElementChild;
-const guesses = document.getElementsByClassName("guesses")[0];
-const scoreEl = document.getElementsByClassName("score")[0];
-const wordEl = document.getElementsByClassName("word")[0];
 const svgBodyParts = document.querySelectorAll(".body-parts");
-const message = document.getElementsByClassName("game-over")[0];
-const messageText = document.getElementsByClassName("message-text")[0];
 const notification = document.querySelector(".notification");
 const h1 = document.querySelector("h1");
 const bEl = document.querySelector("b");
+const guesses = document.getElementsByClassName("guesses")[0];
+const scoreEl = document.getElementsByClassName("score")[0];
+const wordEl = document.getElementsByClassName("word")[0];
+const message = document.getElementsByClassName("game-over")[0];
+const messageText = document.getElementsByClassName("message-text")[0];
 const gameResetBtn = document.getElementsByClassName("btn")[0];
 const noMatchEl = document.getElementsByClassName("nomatch")[0];
 
@@ -25,7 +25,6 @@ function gameOver(status) {
   if (status === "win") {
     h1.style.color = "green";
     h1.innerText = "🏆 YOU WON!! 🏆";
-
     messageText.innerText = `You have won with ${score} points DARE TO PLAY AGAIN?`;
   } else {
     h1.innerText = "Game over!";
@@ -68,10 +67,12 @@ function hideNotification(notification) {
 
 function upateGuess() {
   totalGuesses--;
+
+  guesses.textContent = "You have " + " " + totalGuesses + " Guesses Left";
+
   if (totalGuesses <= 0) {
     gameOver("lost");
   }
-  guesses.textContent = "You have " + " " + totalGuesses + " Guesses Left";
 }
 
 function updateScore(guess) {
@@ -117,30 +118,34 @@ function runGame() {
 window.addEventListener("keydown", function (e) {
   Scoreboard.textContent = `You have ${score} Points`;
   console.log(score);
-  if (
-    (e.code >= "KeyA" && e.code <= "KeyZ") ||
-    e.code === "Å" ||
-    e.code === "Ä" ||
-    e.code === "Ö"
-  ) {
-    const letter = e.key.toLowerCase();
-    if (randomWord.includes(letter)) {
-      if (!correctLetters.includes(letter)) {
-        correctLetters.push(letter);
-        runGame();
+  if (totalGuesses > 0) {
+    if (
+      (e.code >= "KeyA" && e.code <= "Z") ||
+      e.code === "BracketLeft" ||
+      e.code === "Quote" ||
+      e.code === "Semicolon"
+    ) {
+      const letter = e.key.toLowerCase();
+      if (randomWord.includes(letter)) {
+        if (!correctLetters.includes(letter)) {
+          correctLetters.push(letter);
+          runGame();
+        } else {
+          warning();
+        }
       } else {
-        warning();
-      }
-    } else {
-      if (!wrongLetters.includes(letter)) {
-        wrongLetters.push(letter);
-        upateGuess();
-        updateScore("wrong");
-        update();
-      } else {
-        warning();
+        if (!wrongLetters.includes(letter)) {
+          wrongLetters.push(letter);
+          upateGuess();
+          updateScore("wrong");
+          update();
+        } else {
+          warning();
+        }
       }
     }
+  } else {
+    document.querySelector("body").setAttribute("disabled", true);
   }
 });
 function gameReset() {
