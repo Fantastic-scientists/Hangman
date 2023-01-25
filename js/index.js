@@ -7,7 +7,7 @@ let wrongLetters = [];
 //max fel gissningar
 let maxWrongGuesses = 5;
 //Variabel för att kolla när man gissat rätt.
-let correctGuessesLeft;
+let guessesUntilWin;
 //Poängräknare
 let points = 0;
 //Variabel som random ordet sparas i
@@ -27,7 +27,7 @@ playAgainBtn.addEventListener("click", restartGame);
 
 document.addEventListener("keydown", (e) => {
   const keyPressed = e.key.toUpperCase();
-  if (correctGuessesLeft > 0) checkKeyPress(keyPressed);
+  if (guessesUntilWin > 0) checkKeyPress(keyPressed);
 });
 
 /////////////////////////-----FUNCTIONS-----//////////////////////////
@@ -41,7 +41,7 @@ generateRandomWord();
 
 //Rendera ett antal tomma av dessa beroende längd av ord
 function renderEmptyBoxes(word) {
-  correctGuessesLeft = word.length;
+  guessesUntilWin = word.length;
   wordContainer.innerHTML = ``;
   for (let i = 0; i < word.length; i++) {
     wordContainer.innerHTML += `<li id="char${i}"></li>`;
@@ -65,9 +65,9 @@ function correctKeypress(keypress) {
   for (let i = 0; i < randomWord.length; i++) {
     if (randomWord[i] === keypress) {
       document.getElementById(`char${i}`).textContent = keypress;
-      correctGuessesLeft--;
+      guessesUntilWin--;
       //Vid vinst
-      if (correctGuessesLeft === 0) {
+      if (guessesUntilWin === 0) {
         points += 100;
         document.querySelector(".you-won").classList.add("show");
         updateUI();
@@ -127,6 +127,7 @@ function restartGame() {
   noMatchContainer.innerHTML = ``;
   randomWord = ``;
   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".split("");
+  bodyparts = ["scaffold", "head", "body", "arms", "legs"];
   updateUI();
   generateRandomWord();
 }
